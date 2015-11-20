@@ -1,0 +1,20 @@
+os:
+  - osx
+language: go
+go:
+  - 1.5.1
+  - tip
+before_install:
+  - brew update
+  - brew install caskroom/cask/brew-cask
+  - brew cask install vmware-appcatalyst
+  - brew cask install docker-machine
+install:
+  - go get -v ./...
+before_script:
+  - /opt/vmware/appcatalyst/bin/appcatalyst-daemon &
+  - sleep 2
+script:
+  - make build
+  - make install
+  - /usr/local/bin/docker-machine create -d vmwareappcatalyst -h
